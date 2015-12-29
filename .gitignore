@@ -1,0 +1,9 @@
+*.opensdf
+*.sdf
+*.VC.opendb
+
+
+.vs
+Debug
+ipch
+Release
