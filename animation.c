@@ -128,15 +128,17 @@ void anim_square(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 	int width, height;
 	int i, j, index;
 	int remain;
+	Square_Block *flash_layer;
+
 	width = rect_pos.right - rect_pos.left;
 	height = rect_pos.bottom - rect_pos.top;
 
 	//闪烁层 剩余闪烁次数
-	remain = width/2 * height;
-	Square_Block *flash_layer = (Square_Block*)malloc(remain * sizeof(Square_Block));
-	for ( i = 0; i < height; i++) {
-		for (j = 0; j < width; j+=2) {
-			index = (i * width/2) + (j/2);
+	remain = width / 2 * height;
+	flash_layer = (Square_Block*)malloc(remain * sizeof(Square_Block));
+	for (i = 0; i < height; i++) {
+		for (j = 0; j < width; j += 2) {
+			index = (i * width / 2) + (j / 2);
 			flash_layer[index].x = j;
 			flash_layer[index].y = i;
 			flash_layer[index].remain = (rand() % 5 + 3); //第一项表示该[序列]剩余刷新记数
@@ -160,7 +162,7 @@ void anim_square(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 
 /**************************************************
 Function: 方块刷新式动画_绘制随机图案
-Description: 随机选取一个位置实现动画效果 
+Description: 随机选取一个位置实现动画效果
 Input: Stdout 窗口句柄, rect_pos动画矩形范围, text_layer文本层,flash_layer闪烁层, remain剩余方块
 Output: none
 Return: void
@@ -169,25 +171,28 @@ Others:
 void anim_square_draw(HANDLE Stdout, Rect rect_pos, char **text_layer, Square_Block *flash_layer, int *remain) {
 	int random;
 	Pos pos;
+	Square_Block * block;
 
 	if (*remain <= 0) {
 		return;
 	}
 
 	random = rand() % (*remain);
-	Square_Block * block = flash_layer + random;
+	block = flash_layer + random;
 	pos.x = block->x + rect_pos.left;
 	pos.y = block->y + rect_pos.top;
 	if (block->remain > 0) { //计数不为0，则显示动画
-		if (rand() % 4 == 1){
+		if (rand() % 4 == 1) {
 			pos_printf(Stdout, pos, "■");
-		} else {
+		}
+		else {
 			pos_printf(Stdout, pos, "  ");
 		}
 		block->remain--;
-	} else {
-		pos_printf(Stdout, pos, "%c%c", 
-				text_layer[block->y][block->x], text_layer[block->y][block->x + 1]);
+	}
+	else {
+		pos_printf(Stdout, pos, "%c%c",
+			text_layer[block->y][block->x], text_layer[block->y][block->x + 1]);
 		*block = flash_layer[(*remain) - 1];
 		(*remain)--;
 	}
@@ -207,6 +212,7 @@ void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, i
 	int start_1, end_1, increment_1; //外层循环所需参数
 	int start_2, end_2, increment_2; //内存循环所需参数
 	int x, y; //坐标
+	int count = 0; //显示计数
 	int xtoy = 0; //x、y交换标记，为1则交换。因为算法限制，[上下方向动画]时两层循环i,j对应x,y的值与[其他反向动画]时相反
 	double slope; //斜率,计算x,y对应关系用   一般情况下 x = (y / k) + i
 	Pos pos;
@@ -219,41 +225,48 @@ void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, i
 		start_1 = 0; end_1 = width; increment_1 = 2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = 99999999;
-	} else if (ANIM_WIPE_DIR_R_L == flag) { //从右到左
+	}
+	else if (ANIM_WIPE_DIR_R_L == flag) { //从右到左
 		start_1 = width; end_1 = 0; increment_1 = -2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = 99999999;
-	} else if (ANIM_WIPE_DIR_U_D == flag) { //从上到下
+	}
+	else if (ANIM_WIPE_DIR_U_D == flag) { //从上到下
 		xtoy = 1;
 		start_1 = 0; end_1 = height; increment_1 = 1;
 		start_2 = 0; end_2 = width; increment_2 = 2;
 		slope = 99999999;
-	} else if (ANIM_WIPE_DIR_D_U == flag) { //从下到上
+	}
+	else if (ANIM_WIPE_DIR_D_U == flag) { //从下到上
 		xtoy = 1;
 		start_1 = height; end_1 = 0; increment_1 = -1;
 		start_2 = 0; end_2 = width; increment_2 = 2;
 		slope = 99999999;
-	} else if (ANIM_WIPE_DIR_LU_RD == flag) { //从左上到右下
+	}
+	else if (ANIM_WIPE_DIR_LU_RD == flag) { //从左上到右下
 		start_1 = 0; end_1 = 2 * width; increment_1 = 2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = -1 * (height*1.0 / width*1.0);
-	} else if (ANIM_WIPE_DIR_RD_LU == flag) { //从右下到左上
+	}
+	else if (ANIM_WIPE_DIR_RD_LU == flag) { //从右下到左上
 		start_1 = 2 * width; end_1 = 0; increment_1 = -2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = -1 * (height*1.0 / width*1.0);
-	} else if (ANIM_WIPE_DIR_LD_RU == flag) { //从左下到右上
+	}
+	else if (ANIM_WIPE_DIR_LD_RU == flag) { //从左下到右上
 		start_1 = -1 * width; end_1 = width; increment_1 = 2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = (height*1.0 / width*1.0);
-	} else if (ANIM_WIPE_DIR_RU_LD == flag) { //从右上到左下
+	}
+	else if (ANIM_WIPE_DIR_RU_LD == flag) { //从右上到左下
 		start_1 = width; end_1 = -1 * width; increment_1 = -1;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = (height*1.0 / width*1.0);
-	} else { //超出范围
-		return ;
+	}
+	else { //超出范围
+		return;
 	}
 
-	int count = 0; //显示计数
 	for (i = start_1; i != (end_1 + increment_1); i += increment_1) //第一层循环
 	{
 		count = 0; //重置计数
@@ -270,11 +283,11 @@ void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, i
 				y = (int)(j / slope) + i;
 			}
 
-			if ((x>=0 && x < width) && (y>=0 && y < height)) //检测是否超出范围
+			if ((x >= 0 && x < width) && (y >= 0 && y < height)) //检测是否超出范围
 			{
 				pos.x = x + rect_pos.left;
 				pos.y = y + rect_pos.top;
-				pos_printf(Stdout, pos, "%c%c", text_layer[y][x], text_layer[y][x+1]);
+				pos_printf(Stdout, pos, "%c%c", text_layer[y][x], text_layer[y][x + 1]);
 				count++;
 			}
 
@@ -286,7 +299,7 @@ void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, i
 
 /**************************************************
 Function: 全方块擦除动画
-Description: 用擦除动画实现一个方块 
+Description: 用擦除动画实现一个方块
 Input: Stdout 窗口句柄, rect_pos动画矩形范围, sleepTime休息时间,flag 方向,text文字
 Output: none
 Return: void
@@ -295,16 +308,17 @@ Others:
 void anim_wipe_cls(HANDLE Stdout, Rect rect_pos, int sleepTime, int flag, char *text) {
 	int width, height;
 	int i, j;
+	char **text_layer;
 
 	width = rect_pos.right - rect_pos.left;
 	height = rect_pos.bottom - rect_pos.top;
 
-	char **text_layer = (char**)malloc(height * sizeof(char*));
+	text_layer = (char**)malloc(height * sizeof(char*));
 	for (i = 0; i < height; i++) {
 		text_layer[i] = (char*)malloc(width * sizeof(char));
 	}
 	for (i = 0; i < height; i++) {
-		for (j = 0; j < width; j+=2) {
+		for (j = 0; j < width; j += 2) {
 			memcpy(text_layer[i] + j, text, 2 * sizeof(char));
 		}
 	}
@@ -336,7 +350,7 @@ void anim_create_frame(int width, int height, char **text_layer) {
 	}
 
 	//==========下边框==========
-	memcpy(&text_layer[height-1][width - 2], "┛", 2 * sizeof(char));
+	memcpy(&text_layer[height - 1][width - 2], "┛", 2 * sizeof(char));
 	for (i = width - 4; i > 0; i -= 2) {
 		memcpy(&text_layer[height - 1][i], "━", 2 * sizeof(char));
 	}
@@ -575,12 +589,10 @@ void goto_pos(HANDLE Stdout, Pos pos) {
 //功能： 在窗口的任意光标输出文本 
 //用法： _print(窗口句柄,x坐标,y坐标,输出字符串)
 //================================================
-void pos_printf(HANDLE Stdout, Pos pos, const char *format, ...)
-{
-	goto_pos(Stdout, pos);
-
+void pos_printf(HANDLE Stdout, Pos pos, const char *format, ...) {
 	va_list args;
 	va_start(args, format);
+	goto_pos(Stdout, pos);
 	vprintf(format, args);
 	va_end(args);
 }
