@@ -14,8 +14,8 @@ int main() {
 		logoText[i] = (char*)malloc(50 * sizeof(char));
 	}
 	memcpy(logoText[0], "                                                  ", 50 * sizeof(char));
-	memcpy(logoText[1], "                      ƒ£∞Â                        ", 50 * sizeof(char));
-	memcpy(logoText[2], "              By 1205 ΩØ •  12301120              ", 50 * sizeof(char));
+	memcpy(logoText[1], "                      Ê®°Êùø                        ", 50 * sizeof(char));
+	memcpy(logoText[2], "              By 1205 ËíãÂú£  12301120              ", 50 * sizeof(char));
 	memcpy(logoText[3], "                    2012.10.23                    ", 50 * sizeof(char));
 	memcpy(logoText[4], "                                                  ", 50 * sizeof(char));
 	anim_create_frame(50, 5, logoText);
@@ -35,7 +35,7 @@ int main() {
 	goto_pos(Stdout, pos);
 	system("pause");
 
-	anim_wipe_cls(Stdout, rect_pos, 10, ANIM_WIPE_DIR_RD_LU, "°ˆ");
+	anim_wipe_cls(Stdout, rect_pos, 10, ANIM_WIPE_DIR_RD_LU, "‚ñ†");
 	anim_wipe(Stdout, rect_pos, logoText, 10, ANIM_WIPE_DIR_RD_LU);
 	pos_printf(Stdout, pos, "");
 	
@@ -46,7 +46,7 @@ int main() {
 	}
 	free(logoText);
 
-	//¥À¥¶ø™ º–¥≥Ã–Ú¥˙¬Î
+	//Ê≠§Â§ÑÂºÄÂßãÂÜôÁ®ãÂ∫è‰ª£Á†Å
 
 	return 0;
 }

@@ -7,24 +7,24 @@ typedef struct {
 	int remain;
 }Square_Block;
 
-static int anim_forword_getpos(Rect rect_pos, Pos pos_start, Pos *pos_list); //¸üĞÂ[Ë¢ĞÂÇøÓò]µÄ×ø±ê
-static void anim_forword_draw(HANDLE Stdout, Pos* point_list, int length); //»æÖÆËæ»úÍ¼°¸
+static int anim_forword_getpos(Rect rect_pos, Pos pos_start, Pos *pos_list); //æ›´æ–°[åˆ·æ–°åŒºåŸŸ]çš„åæ ‡
+static void anim_forword_draw(HANDLE Stdout, Pos* point_list, int length); //ç»˜åˆ¶éšæœºå›¾æ¡ˆ
 
 static void anim_square_draw(HANDLE Stdout, Rect rect_pos, char **text_layer, Square_Block *flash_layer, int *remain);
 
 /**************************************************
-Function: ĞĞ½øÊ½¶¯»­
-Description: ĞĞ½øÊ½¶¯»­
-Input: Stdout ´°¿Ú¾ä±ú, rect_pos¶¯»­¾ØĞÎ·¶Î§, text_layerÎÄ±¾Êı×é
+Function: è¡Œè¿›å¼åŠ¨ç”»
+Description: è¡Œè¿›å¼åŠ¨ç”»
+Input: Stdout çª—å£å¥æŸ„, rect_posåŠ¨ç”»çŸ©å½¢èŒƒå›´, text_layeræ–‡æœ¬æ•°ç»„
 Output: none
 Return: void
 Others:
 **************************************************/
 void anim_forword(HANDLE Stdout, Rect rect_pos, char **text_layer) {
-	const int FLASH_WIDTH = 4; //ÉÁË¸¶¯»­¿í¶È
+	const int FLASH_WIDTH = 4; //é—ªçƒåŠ¨ç”»å®½åº¦
 	int width, height;
 	int point_list_len;
-	int i, j, k, l;//¸Ã±äÁ¿ÓÃÓÚ¸øÇ¶Ì×µÄforÊ¹ÓÃ 
+	int i, j, k, l;//è¯¥å˜é‡ç”¨äºç»™åµŒå¥—çš„forä½¿ç”¨ 
 	Pos pos;
 	Pos *point_list;
 
@@ -32,11 +32,11 @@ void anim_forword(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 	height = rect_pos.bottom - rect_pos.top;
 	point_list = (Pos*)malloc(height * sizeof(Pos));
 	pos.y = rect_pos.top;
-	for (i = 0 - (height * 2); i < width; i += 2)  //×î´óÑ­»·£¬i´ú±í[Ë¢ĞÂÇø]ÖĞµÚÒ»[Ë¢ĞÂÁĞ]µÄµÚÒ»µãx×ø±ê 
+	for (i = 0 - (height * 2); i < width; i += 2)  //æœ€å¤§å¾ªç¯ï¼Œiä»£è¡¨[åˆ·æ–°åŒº]ä¸­ç¬¬ä¸€[åˆ·æ–°åˆ—]çš„ç¬¬ä¸€ç‚¹xåæ ‡ 
 	{
 		pos.x = rect_pos.left + i + 6;
 		point_list_len = anim_forword_getpos(rect_pos, pos, point_list);
-		for (j = 0; j < 2; j++) { //¸ÃÑ­»·ÊµÏÖµ±Ç°[Ë¢ĞÂÇøÓò]·½¿éÉÁË¸¶¯»­Ğ§¹û 
+		for (j = 0; j < 2; j++) { //è¯¥å¾ªç¯å®ç°å½“å‰[åˆ·æ–°åŒºåŸŸ]æ–¹å—é—ªçƒåŠ¨ç”»æ•ˆæœ 
 			anim_forword_draw(Stdout, point_list, point_list_len);
 
 			pos.x = rect_pos.left + i + 4;
@@ -66,8 +66,8 @@ void anim_forword(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 
 /**************************************************
 Function: anim_forword_getpos
-Description: ĞĞ½øÊ½¶¯»­_µÃµ½Ë¢ĞÂµã
-Input: rect_pos¶¯»­¾ØĞÎ·¶Î§, pos_startÆğÊ¼µã, pos_list·µ»ØµãÊı×é
+Description: è¡Œè¿›å¼åŠ¨ç”»_å¾—åˆ°åˆ·æ–°ç‚¹
+Input: rect_posåŠ¨ç”»çŸ©å½¢èŒƒå›´, pos_startèµ·å§‹ç‚¹, pos_listè¿”å›ç‚¹æ•°ç»„
 Output: none
 Return: void
 Others:
@@ -83,7 +83,7 @@ static int anim_forword_getpos(Rect rect_pos, Pos pos_start, Pos *pos_list) {
 	pos_cur = pos_start;
 	count = 0;
 	for (i = 0; i < height; i++) {
-		//ÅĞ¶ÏµãÊÇ·ñ³¬³ö·¶Î§ 
+		//åˆ¤æ–­ç‚¹æ˜¯å¦è¶…å‡ºèŒƒå›´ 
 		if (pos_cur.x >= rect_pos.left && pos_cur.x < rect_pos.right &&
 			pos_cur.y >= rect_pos.top && pos_cur.y < rect_pos.bottom) {
 			pos_list[count++] = pos_cur;
@@ -98,9 +98,9 @@ static int anim_forword_getpos(Rect rect_pos, Pos pos_start, Pos *pos_list) {
 
 
 /**************************************************
-Function: ÔÚµ±Ç°Ö¸¶¨µÄ[Ë¢ĞÂÁĞ]»æÖÆËæ»úÍ¼°¸ÊµÏÖ¶¯»­Ğ§¹û
-Description: ÔÚµ±Ç°Ö¸¶¨µÄ[Ë¢ĞÂÁĞ]»æÖÆËæ»úÍ¼°¸ÊµÏÖ¶¯»­Ğ§¹û
-Input: _logo1_draw(µÚ¼¸ÁĞ[Ë¢ĞÂÁĞ],±ß¿ò¸ß¶È,[Ë¢ĞÂÇø],[ÎÄ±¾Ó³ÉäÇø])
+Function: åœ¨å½“å‰æŒ‡å®šçš„[åˆ·æ–°åˆ—]ç»˜åˆ¶éšæœºå›¾æ¡ˆå®ç°åŠ¨ç”»æ•ˆæœ
+Description: åœ¨å½“å‰æŒ‡å®šçš„[åˆ·æ–°åˆ—]ç»˜åˆ¶éšæœºå›¾æ¡ˆå®ç°åŠ¨ç”»æ•ˆæœ
+Input: _logo1_draw(ç¬¬å‡ åˆ—[åˆ·æ–°åˆ—],è¾¹æ¡†é«˜åº¦,[åˆ·æ–°åŒº],[æ–‡æœ¬æ˜ å°„åŒº])
 Output: none
 Return: void
 Others:
@@ -109,7 +109,7 @@ static void anim_forword_draw(HANDLE Stdout, Pos* point_list, int length) {
 	int i;
 	for (i = 0; i < length; i++) {
 		if (rand() % 3 == 1)
-			pos_printf(Stdout, point_list[i], "¡ö");
+			pos_printf(Stdout, point_list[i], "â– ");
 		else
 			pos_printf(Stdout, point_list[i], "  ");
 	}
@@ -117,9 +117,9 @@ static void anim_forword_draw(HANDLE Stdout, Pos* point_list, int length) {
 
 
 /**************************************************
-Function: ·½¿éË¢ĞÂÊ½¶¯»­
-Description: ·½¿éË¢ĞÂÊ½¶¯»­
-Input: Stdout ´°¿Ú¾ä±ú, rect_pos¶¯»­¾ØĞÎ·¶Î§, text_layerÎÄ±¾Êı×é
+Function: æ–¹å—åˆ·æ–°å¼åŠ¨ç”»
+Description: æ–¹å—åˆ·æ–°å¼åŠ¨ç”»
+Input: Stdout çª—å£å¥æŸ„, rect_posåŠ¨ç”»çŸ©å½¢èŒƒå›´, text_layeræ–‡æœ¬æ•°ç»„
 Output: none
 Return: void
 Others:
@@ -133,7 +133,7 @@ void anim_square(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 	width = rect_pos.right - rect_pos.left;
 	height = rect_pos.bottom - rect_pos.top;
 
-	//ÉÁË¸²ã Ê£ÓàÉÁË¸´ÎÊı
+	//é—ªçƒå±‚ å‰©ä½™é—ªçƒæ¬¡æ•°
 	remain = width / 2 * height;
 	flash_layer = (Square_Block*)malloc(remain * sizeof(Square_Block));
 	for (i = 0; i < height; i++) {
@@ -141,7 +141,7 @@ void anim_square(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 			index = (i * width / 2) + (j / 2);
 			flash_layer[index].x = j;
 			flash_layer[index].y = i;
-			flash_layer[index].remain = (rand() % 5 + 3); //µÚÒ»Ïî±íÊ¾¸Ã[ĞòÁĞ]Ê£ÓàË¢ĞÂ¼ÇÊı
+			flash_layer[index].remain = (rand() % 5 + 3); //ç¬¬ä¸€é¡¹è¡¨ç¤ºè¯¥[åºåˆ—]å‰©ä½™åˆ·æ–°è®°æ•°
 		}
 	}
 
@@ -161,9 +161,9 @@ void anim_square(HANDLE Stdout, Rect rect_pos, char **text_layer) {
 }
 
 /**************************************************
-Function: ·½¿éË¢ĞÂÊ½¶¯»­_»æÖÆËæ»úÍ¼°¸
-Description: Ëæ»úÑ¡È¡Ò»¸öÎ»ÖÃÊµÏÖ¶¯»­Ğ§¹û
-Input: Stdout ´°¿Ú¾ä±ú, rect_pos¶¯»­¾ØĞÎ·¶Î§, text_layerÎÄ±¾²ã,flash_layerÉÁË¸²ã, remainÊ£Óà·½¿é
+Function: æ–¹å—åˆ·æ–°å¼åŠ¨ç”»_ç»˜åˆ¶éšæœºå›¾æ¡ˆ
+Description: éšæœºé€‰å–ä¸€ä¸ªä½ç½®å®ç°åŠ¨ç”»æ•ˆæœ
+Input: Stdout çª—å£å¥æŸ„, rect_posåŠ¨ç”»çŸ©å½¢èŒƒå›´, text_layeræ–‡æœ¬å±‚,flash_layeré—ªçƒå±‚, remainå‰©ä½™æ–¹å—
 Output: none
 Return: void
 Others:
@@ -181,9 +181,9 @@ void anim_square_draw(HANDLE Stdout, Rect rect_pos, char **text_layer, Square_Bl
 	block = flash_layer + random;
 	pos.x = block->x + rect_pos.left;
 	pos.y = block->y + rect_pos.top;
-	if (block->remain > 0) { //¼ÆÊı²»Îª0£¬ÔòÏÔÊ¾¶¯»­
+	if (block->remain > 0) { //è®¡æ•°ä¸ä¸º0ï¼Œåˆ™æ˜¾ç¤ºåŠ¨ç”»
 		if (rand() % 4 == 1) {
-			pos_printf(Stdout, pos, "¡ö");
+			pos_printf(Stdout, pos, "â– ");
 		}
 		else {
 			pos_printf(Stdout, pos, "  ");
@@ -199,91 +199,91 @@ void anim_square_draw(HANDLE Stdout, Rect rect_pos, char **text_layer, Square_Bl
 }
 
 /**************************************************
-Function: ²Á³ı¶¯»­
-Description: ÓÃÓÚ²Á³ı¶¯»­µÄ»æÖÆ
-Input: Stdout ´°¿Ú¾ä±ú, rect_pos¶¯»­¾ØĞÎ·¶Î§, text_layerÎÄ±¾Êı×é sleepTimeĞİÏ¢Ê±¼ä flag ·½Ïò
+Function: æ“¦é™¤åŠ¨ç”»
+Description: ç”¨äºæ“¦é™¤åŠ¨ç”»çš„ç»˜åˆ¶
+Input: Stdout çª—å£å¥æŸ„, rect_posåŠ¨ç”»çŸ©å½¢èŒƒå›´, text_layeræ–‡æœ¬æ•°ç»„ sleepTimeä¼‘æ¯æ—¶é—´ flag æ–¹å‘
 Output: none
 Return: void
 Others:
 **************************************************/
 void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, int flag) {
 	int width, height;
-	int i, j; //ÓÃÓÚÑ­»·
-	int start_1, end_1, increment_1; //Íâ²ãÑ­»·ËùĞè²ÎÊı
-	int start_2, end_2, increment_2; //ÄÚ´æÑ­»·ËùĞè²ÎÊı
-	int x, y; //×ø±ê
-	int count = 0; //ÏÔÊ¾¼ÆÊı
-	int xtoy = 0; //x¡¢y½»»»±ê¼Ç£¬Îª1Ôò½»»»¡£ÒòÎªËã·¨ÏŞÖÆ£¬[ÉÏÏÂ·½Ïò¶¯»­]Ê±Á½²ãÑ­»·i,j¶ÔÓ¦x,yµÄÖµÓë[ÆäËû·´Ïò¶¯»­]Ê±Ïà·´
-	double slope; //Ğ±ÂÊ,¼ÆËãx,y¶ÔÓ¦¹ØÏµÓÃ   Ò»°ãÇé¿öÏÂ x = (y / k) + i
+	int i, j; //ç”¨äºå¾ªç¯
+	int start_1, end_1, increment_1; //å¤–å±‚å¾ªç¯æ‰€éœ€å‚æ•°
+	int start_2, end_2, increment_2; //å†…å­˜å¾ªç¯æ‰€éœ€å‚æ•°
+	int x, y; //åæ ‡
+	int count = 0; //æ˜¾ç¤ºè®¡æ•°
+	int xtoy = 0; //xã€yäº¤æ¢æ ‡è®°ï¼Œä¸º1åˆ™äº¤æ¢ã€‚å› ä¸ºç®—æ³•é™åˆ¶ï¼Œ[ä¸Šä¸‹æ–¹å‘åŠ¨ç”»]æ—¶ä¸¤å±‚å¾ªç¯i,jå¯¹åº”x,yçš„å€¼ä¸[å…¶ä»–åå‘åŠ¨ç”»]æ—¶ç›¸å
+	double slope; //æ–œç‡,è®¡ç®—x,yå¯¹åº”å…³ç³»ç”¨   ä¸€èˆ¬æƒ…å†µä¸‹ x = (y / k) + i
 	Pos pos;
 
 	width = rect_pos.right - rect_pos.left;
 	height = rect_pos.bottom - rect_pos.top;
 
-	//ÅĞ¶Ï¶¯»­ÀàĞÍ
-	if (ANIM_WIPE_DIR_L_R == flag) { //´Ó×óµ½ÓÒ
+	//åˆ¤æ–­åŠ¨ç”»ç±»å‹
+	if (ANIM_WIPE_DIR_L_R == flag) { //ä»å·¦åˆ°å³
 		start_1 = 0; end_1 = width; increment_1 = 2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = 99999999;
 	}
-	else if (ANIM_WIPE_DIR_R_L == flag) { //´ÓÓÒµ½×ó
+	else if (ANIM_WIPE_DIR_R_L == flag) { //ä»å³åˆ°å·¦
 		start_1 = width; end_1 = 0; increment_1 = -2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = 99999999;
 	}
-	else if (ANIM_WIPE_DIR_U_D == flag) { //´ÓÉÏµ½ÏÂ
+	else if (ANIM_WIPE_DIR_U_D == flag) { //ä»ä¸Šåˆ°ä¸‹
 		xtoy = 1;
 		start_1 = 0; end_1 = height; increment_1 = 1;
 		start_2 = 0; end_2 = width; increment_2 = 2;
 		slope = 99999999;
 	}
-	else if (ANIM_WIPE_DIR_D_U == flag) { //´ÓÏÂµ½ÉÏ
+	else if (ANIM_WIPE_DIR_D_U == flag) { //ä»ä¸‹åˆ°ä¸Š
 		xtoy = 1;
 		start_1 = height; end_1 = 0; increment_1 = -1;
 		start_2 = 0; end_2 = width; increment_2 = 2;
 		slope = 99999999;
 	}
-	else if (ANIM_WIPE_DIR_LU_RD == flag) { //´Ó×óÉÏµ½ÓÒÏÂ
+	else if (ANIM_WIPE_DIR_LU_RD == flag) { //ä»å·¦ä¸Šåˆ°å³ä¸‹
 		start_1 = 0; end_1 = 2 * width; increment_1 = 2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = -1 * (height*1.0 / width*1.0);
 	}
-	else if (ANIM_WIPE_DIR_RD_LU == flag) { //´ÓÓÒÏÂµ½×óÉÏ
+	else if (ANIM_WIPE_DIR_RD_LU == flag) { //ä»å³ä¸‹åˆ°å·¦ä¸Š
 		start_1 = 2 * width; end_1 = 0; increment_1 = -2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = -1 * (height*1.0 / width*1.0);
 	}
-	else if (ANIM_WIPE_DIR_LD_RU == flag) { //´Ó×óÏÂµ½ÓÒÉÏ
+	else if (ANIM_WIPE_DIR_LD_RU == flag) { //ä»å·¦ä¸‹åˆ°å³ä¸Š
 		start_1 = -1 * width; end_1 = width; increment_1 = 2;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = (height*1.0 / width*1.0);
 	}
-	else if (ANIM_WIPE_DIR_RU_LD == flag) { //´ÓÓÒÉÏµ½×óÏÂ
+	else if (ANIM_WIPE_DIR_RU_LD == flag) { //ä»å³ä¸Šåˆ°å·¦ä¸‹
 		start_1 = width; end_1 = -1 * width; increment_1 = -1;
 		start_2 = 0; end_2 = height; increment_2 = 1;
 		slope = (height*1.0 / width*1.0);
 	}
-	else { //³¬³ö·¶Î§
+	else { //è¶…å‡ºèŒƒå›´
 		return;
 	}
 
-	for (i = start_1; i != (end_1 + increment_1); i += increment_1) //µÚÒ»²ãÑ­»·
+	for (i = start_1; i != (end_1 + increment_1); i += increment_1) //ç¬¬ä¸€å±‚å¾ªç¯
 	{
-		count = 0; //ÖØÖÃ¼ÆÊı
-		for (j = start_2; j != (end_2 + increment_2); j += increment_2) //µÚ¶ş²ãÑ­»·
+		count = 0; //é‡ç½®è®¡æ•°
+		for (j = start_2; j != (end_2 + increment_2); j += increment_2) //ç¬¬äºŒå±‚å¾ªç¯
 		{
-			if (xtoy == 0)// ÆÕÍ¨Çé¿ö if(flag != 3 && flag != 4)
+			if (xtoy == 0)// æ™®é€šæƒ…å†µ if(flag != 3 && flag != 4)
 			{
-				x = ((int)(((j / slope) + i) / 2)) * 2; //±£Ö¤ÎªÅ¼Êı
+				x = ((int)(((j / slope) + i) / 2)) * 2; //ä¿è¯ä¸ºå¶æ•°
 				y = j;
 			}
-			else if (xtoy == 1) //ÉÏÏÂ·½ÏòµÄÇé¿ö if(flag == 3 || flag == 4)
+			else if (xtoy == 1) //ä¸Šä¸‹æ–¹å‘çš„æƒ…å†µ if(flag == 3 || flag == 4)
 			{
-				x = ((int)(j / 2)) * 2; //±£Ö¤ÎªÅ¼Êı
+				x = ((int)(j / 2)) * 2; //ä¿è¯ä¸ºå¶æ•°
 				y = (int)(j / slope) + i;
 			}
 
-			if ((x >= 0 && x < width) && (y >= 0 && y < height)) //¼ì²âÊÇ·ñ³¬³ö·¶Î§
+			if ((x >= 0 && x < width) && (y >= 0 && y < height)) //æ£€æµ‹æ˜¯å¦è¶…å‡ºèŒƒå›´
 			{
 				pos.x = x + rect_pos.left;
 				pos.y = y + rect_pos.top;
@@ -292,15 +292,15 @@ void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, i
 			}
 
 		}
-		if (count > 0) //±¾´ÎÑ­»·ÓĞ¶¯»­Éú³É
-			Sleep(sleepTime); //¶¯»­ÑÓ³Ù
+		if (count > 0) //æœ¬æ¬¡å¾ªç¯æœ‰åŠ¨ç”»ç”Ÿæˆ
+			Sleep(sleepTime); //åŠ¨ç”»å»¶è¿Ÿ
 	}
 }
 
 /**************************************************
-Function: È«·½¿é²Á³ı¶¯»­
-Description: ÓÃ²Á³ı¶¯»­ÊµÏÖÒ»¸ö·½¿é
-Input: Stdout ´°¿Ú¾ä±ú, rect_pos¶¯»­¾ØĞÎ·¶Î§, sleepTimeĞİÏ¢Ê±¼ä,flag ·½Ïò,textÎÄ×Ö
+Function: å…¨æ–¹å—æ“¦é™¤åŠ¨ç”»
+Description: ç”¨æ“¦é™¤åŠ¨ç”»å®ç°ä¸€ä¸ªæ–¹å—
+Input: Stdout çª—å£å¥æŸ„, rect_posåŠ¨ç”»çŸ©å½¢èŒƒå›´, sleepTimeä¼‘æ¯æ—¶é—´,flag æ–¹å‘,textæ–‡å­—
 Output: none
 Return: void
 Others:
@@ -331,48 +331,48 @@ void anim_wipe_cls(HANDLE Stdout, Rect rect_pos, int sleepTime, int flag, char *
 	free(text_layer);
 }
 
-//===========Éú³É[ÎÄ±¾Ó³ÉäÇø]µÄ±ß¿òÏñËØ===========
-//¹¦ÄÜ£º Ó³ÉäÃ¿Ò»¸öµã¶ÔÓ¦µÄÏñËØ½ø[ÎÄ±¾Ó³ÉäÇø]£¬ĞÎ³ÉÒ»¸ö±ß¿ò 
-//ÓÃ·¨£º _textPrintFrame(±ß¿ò¿í¶È,±ß¿ò¸ß¶È,[ÎÄ±¾Ó³ÉäÇø]µÄÖ¸Õë)
+//===========ç”Ÿæˆ[æ–‡æœ¬æ˜ å°„åŒº]çš„è¾¹æ¡†åƒç´ ===========
+//åŠŸèƒ½ï¼š æ˜ å°„æ¯ä¸€ä¸ªç‚¹å¯¹åº”çš„åƒç´ è¿›[æ–‡æœ¬æ˜ å°„åŒº]ï¼Œå½¢æˆä¸€ä¸ªè¾¹æ¡† 
+//ç”¨æ³•ï¼š _textPrintFrame(è¾¹æ¡†å®½åº¦,è¾¹æ¡†é«˜åº¦,[æ–‡æœ¬æ˜ å°„åŒº]çš„æŒ‡é’ˆ)
 //================================================
 void anim_create_frame(int width, int height, char **text_layer) {
 	int i;
-	//==========ÉÏ±ß¿ò==========
-	memcpy(&text_layer[0][0], "©³", 2 * sizeof(char));
+	//==========ä¸Šè¾¹æ¡†==========
+	memcpy(&text_layer[0][0], "â”", 2 * sizeof(char));
 	for (i = 2; i < width - 2; i += 2) {
-		memcpy(&text_layer[0][i], "©¥", 2 * sizeof(char));
+		memcpy(&text_layer[0][i], "â”", 2 * sizeof(char));
 	}
-	memcpy(&text_layer[0][width - 2], "©·", 2 * sizeof(char));
+	memcpy(&text_layer[0][width - 2], "â”“", 2 * sizeof(char));
 
-	//==========ÓÒ±ß¿ò========== 
+	//==========å³è¾¹æ¡†========== 
 	for (i = 1; i < height - 1; i++) {
-		memcpy(&text_layer[i][width - 2], "©§", 2 * sizeof(char));
+		memcpy(&text_layer[i][width - 2], "â”ƒ", 2 * sizeof(char));
 	}
 
-	//==========ÏÂ±ß¿ò==========
-	memcpy(&text_layer[height - 1][width - 2], "©¿", 2 * sizeof(char));
+	//==========ä¸‹è¾¹æ¡†==========
+	memcpy(&text_layer[height - 1][width - 2], "â”›", 2 * sizeof(char));
 	for (i = width - 4; i > 0; i -= 2) {
-		memcpy(&text_layer[height - 1][i], "©¥", 2 * sizeof(char));
+		memcpy(&text_layer[height - 1][i], "â”", 2 * sizeof(char));
 	}
-	memcpy(&text_layer[height - 1][0], "©»", 2 * sizeof(char));
+	memcpy(&text_layer[height - 1][0], "â”—", 2 * sizeof(char));
 
-	//==========×ó±ß¿ò========== 
+	//==========å·¦è¾¹æ¡†========== 
 	for (i = height - 2; i > 0; i--) {
-		memcpy(&text_layer[i][0], "©§", 2 * sizeof(char));
+		memcpy(&text_layer[i][0], "â”ƒ", 2 * sizeof(char));
 	}
 }
 
 
 //
-////===============·½¿éË¢ĞÂÊ½¶¯»­logo==============
-////¹¦ÄÜ£º ·½¿éË¢ĞÂÊ½¶¯»­logo
-////ÓÃ·¨£º _logo2(´°¿Ú¾ä±ú,±ß¿ò¿í¶È,±ß¿ò¸ß¶È,ÆğÊ¼x×ø±ê,ÆğÊ¼y×ø±ê,ÎÄ±¾Êı×é,ÎÄ±¾¸ß¶ÈÊı×é)
+////===============æ–¹å—åˆ·æ–°å¼åŠ¨ç”»logo==============
+////åŠŸèƒ½ï¼š æ–¹å—åˆ·æ–°å¼åŠ¨ç”»logo
+////ç”¨æ³•ï¼š _logo2(çª—å£å¥æŸ„,è¾¹æ¡†å®½åº¦,è¾¹æ¡†é«˜åº¦,èµ·å§‹xåæ ‡,èµ·å§‹yåæ ‡,æ–‡æœ¬æ•°ç»„,æ–‡æœ¬é«˜åº¦æ•°ç»„)
 ////================================================
 //void _logo2(HANDLE Stdout, int width, int height, int left, int top, char **logoText, int *logoTextHeight)
 //{
 //	int i, j;
 //
-//	//ÉùÃ÷[ÎÄ±¾Ó³ÉäÇø]µÄ×Ö·û´®Êı×é 
+//	//å£°æ˜[æ–‡æœ¬æ˜ å°„åŒº]çš„å­—ç¬¦ä¸²æ•°ç»„ 
 //	char ***positionText = (char***)malloc((width + 1) * sizeof(char**));
 //	for (i = 0; i <= width; i++)
 //	{
@@ -381,18 +381,18 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //			positionText[i][j] = (char*)malloc(3 * sizeof(char));
 //	}
 //
-//	//Ğ´ÈëÎÄ±¾Ó³ÉäÇø 
-//	for (i = 1; i <= width; i++) //½«¿ÕÎÄ±¾Ğ´Èë[ÎÄ±¾Ó³ÉäÇø] 
+//	//å†™å…¥æ–‡æœ¬æ˜ å°„åŒº 
+//	for (i = 1; i <= width; i++) //å°†ç©ºæ–‡æœ¬å†™å…¥[æ–‡æœ¬æ˜ å°„åŒº] 
 //		for (j = 1; j <= height; j++)
 //			strcpy(positionText[i][j], "  ");
-//	_textPrintFrame(width, height, positionText); //Éú³É±ß¿ò½ø[ÎÄ±¾Ó³ÉäÇø]
+//	_textPrintFrame(width, height, positionText); //ç”Ÿæˆè¾¹æ¡†è¿›[æ–‡æœ¬æ˜ å°„åŒº]
 //
-//	for (i = 1; i <= logoTextHeight[0]; i++) //½«ÏÔÊ¾ÎÄ±¾Ğ´Èë[ÎÄ±¾Ó³ÉäÇø]
+//	for (i = 1; i <= logoTextHeight[0]; i++) //å°†æ˜¾ç¤ºæ–‡æœ¬å†™å…¥[æ–‡æœ¬æ˜ å°„åŒº]
 //		_textCreat(width, logoTextHeight[i], positionText, logoText[i]);
 //
-//	_logo2_animation(Stdout, width, height, left, top, positionText); //¶¯»­¿ØÖÆºËĞÄ
+//	_logo2_animation(Stdout, width, height, left, top, positionText); //åŠ¨ç”»æ§åˆ¶æ ¸å¿ƒ
 //
-//																	  //ÊÍ·Å[ÎÄ±¾Ó³ÉäÇø]µÄ±äÁ¿
+//																	  //é‡Šæ”¾[æ–‡æœ¬æ˜ å°„åŒº]çš„å˜é‡
 //	for (i = 0; i <= width; i++)
 //		for (j = 0; j <= height; j++)
 //			free(positionText[i][j]);
@@ -403,15 +403,15 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //
 
 //
-////==================²Á³ı¶¯»­logo==================
-////¹¦ÄÜ£º ²Á³ı¶¯»­logo 
-////ÓÃ·¨£º _wipe_logo(´°¿Ú¾ä±ú, ±ß¿ò¿í¶È, ±ß¿ò¸ß¶È, ÆğÊ¼x×ø±ê, ÆğÊ¼y×ø±ê, ÑÓ³ÙÊ±¼ä, ·½Ïò±êÖ¾, ÎÄ±¾Êı×é,ÎÄ±¾¸ß¶ÈÊı×é)
+////==================æ“¦é™¤åŠ¨ç”»logo==================
+////åŠŸèƒ½ï¼š æ“¦é™¤åŠ¨ç”»logo 
+////ç”¨æ³•ï¼š _wipe_logo(çª—å£å¥æŸ„, è¾¹æ¡†å®½åº¦, è¾¹æ¡†é«˜åº¦, èµ·å§‹xåæ ‡, èµ·å§‹yåæ ‡, å»¶è¿Ÿæ—¶é—´, æ–¹å‘æ ‡å¿—, æ–‡æœ¬æ•°ç»„,æ–‡æœ¬é«˜åº¦æ•°ç»„)
 ////================================================
 //void _wipe_logo(HANDLE Stdout, int width, int height, int left, int top, int sleepTime, int flag, char **logoText, int *logoTextHeight)
 //{
-//	int i, j;//¸Ã±äÁ¿ÓÃÓÚ¸øÇ¶Ì×µÄforÊ¹ÓÃ 
+//	int i, j;//è¯¥å˜é‡ç”¨äºç»™åµŒå¥—çš„forä½¿ç”¨ 
 //
-//			 //ÉùÃ÷[ÎÄ±¾Ó³ÉäÇø]µÄ×Ö·û´®Êı×é 
+//			 //å£°æ˜[æ–‡æœ¬æ˜ å°„åŒº]çš„å­—ç¬¦ä¸²æ•°ç»„ 
 //	char ***positionText = (char***)malloc((width + 1) * sizeof(char**));
 //	for (i = 0; i <= width; i++)
 //	{
@@ -420,18 +420,18 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //			positionText[i][j] = (char*)malloc(3 * sizeof(char));
 //	}
 //
-//	//Ğ´ÈëÎÄ±¾Ó³ÉäÇø 
-//	for (i = 1; i <= width; i++) //½«¿ÕÎÄ±¾Ğ´Èë[ÎÄ±¾Ó³ÉäÇø] 
+//	//å†™å…¥æ–‡æœ¬æ˜ å°„åŒº 
+//	for (i = 1; i <= width; i++) //å°†ç©ºæ–‡æœ¬å†™å…¥[æ–‡æœ¬æ˜ å°„åŒº] 
 //		for (j = 1; j <= height; j++)
 //			strcpy(positionText[i][j], "  ");
-//	_textPrintFrame(width, height, positionText); //Éú³É±ß¿ò½ø[ÎÄ±¾Ó³ÉäÇø]
+//	_textPrintFrame(width, height, positionText); //ç”Ÿæˆè¾¹æ¡†è¿›[æ–‡æœ¬æ˜ å°„åŒº]
 //
-//	for (i = 1; i <= logoTextHeight[0]; i++) //½«ÏÔÊ¾ÎÄ±¾Ğ´Èë[ÎÄ±¾Ó³ÉäÇø]
+//	for (i = 1; i <= logoTextHeight[0]; i++) //å°†æ˜¾ç¤ºæ–‡æœ¬å†™å…¥[æ–‡æœ¬æ˜ å°„åŒº]
 //		_textCreat(width, logoTextHeight[i], positionText, logoText[i]);
 //
 //	_wipe_animation(Stdout, width, height, left, top, sleepTime, flag, positionText);
 //
-//	//ÊÍ·Å[ÎÄ±¾Ó³ÉäÇø]µÄ±äÁ¿
+//	//é‡Šæ”¾[æ–‡æœ¬æ˜ å°„åŒº]çš„å˜é‡
 //	for (i = 0; i <= width; i++)
 //		for (j = 0; j <= height; j++)
 //			free(positionText[i][j]);
@@ -442,21 +442,21 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //
 //
 //
-////==========Éú³É[ÎÄ±¾Ó³ÉäÇø]ÖĞµÄÎÄ±¾ÏñËØ==========
-////¹¦ÄÜ£º ½«ÎÄ±¾ĞÅÏ¢Ó³Éä½ø±ß¿òÖĞµÄÄ³Ò»ĞĞ(¾ÓÖĞ) 
-////ÓÃ·¨£º_creatText(±ß¿ò¿í¶È,±ß¿ò¸ß¶È,[ÎÄ±¾Ó³ÉäÇø]µÄÖ¸Õë,ÎÄ±¾)
+////==========ç”Ÿæˆ[æ–‡æœ¬æ˜ å°„åŒº]ä¸­çš„æ–‡æœ¬åƒç´ ==========
+////åŠŸèƒ½ï¼š å°†æ–‡æœ¬ä¿¡æ¯æ˜ å°„è¿›è¾¹æ¡†ä¸­çš„æŸä¸€è¡Œ(å±…ä¸­) 
+////ç”¨æ³•ï¼š_creatText(è¾¹æ¡†å®½åº¦,è¾¹æ¡†é«˜åº¦,[æ–‡æœ¬æ˜ å°„åŒº]çš„æŒ‡é’ˆ,æ–‡æœ¬)
 ////================================================
 //void _textCreat(int width, int height, char*** positionText, char* text)
 //
 //{
 //	int length = 0, x = 1;
-//	length = strlen(text); //¼ÆËã×Ö·û´®³¤¶È 
+//	length = strlen(text); //è®¡ç®—å­—ç¬¦ä¸²é•¿åº¦ 
 //	x = ((int)(width - length) / 4) * 2 + 1;
 //
 //	int i = 0;
 //	while (text[i] != '\0' && text[i + 1] != '\0')
 //	{
-//		if (x < width && x > 0)//·ÀÖ¹¸²¸Ç±ß¿ò
+//		if (x < width && x > 0)//é˜²æ­¢è¦†ç›–è¾¹æ¡†
 //		{
 //			positionText[x][height][0] = text[i];
 //			positionText[x][height][1] = text[i + 1];
@@ -469,9 +469,9 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //}
 //
 //
-////=================×ßÈ¦Ê½¶¯»­logo=================
-////¹¦ÄÜ£º ×ßÈ¦Ê½¶¯»­logo
-////ÓÃ·¨£º _logo3(´°¿Ú¾ä±ú,±ß¿ò¿í¶È,±ß¿ò¸ß¶È,ÆğÊ¼x×ø±ê,ÆğÊ¼y×ø±ê,ÎÄ±¾Êı×é,ÎÄ±¾¸ß¶ÈÊı×é)
+////=================èµ°åœˆå¼åŠ¨ç”»logo=================
+////åŠŸèƒ½ï¼š èµ°åœˆå¼åŠ¨ç”»logo
+////ç”¨æ³•ï¼š _logo3(çª—å£å¥æŸ„,è¾¹æ¡†å®½åº¦,è¾¹æ¡†é«˜åº¦,èµ·å§‹xåæ ‡,èµ·å§‹yåæ ‡,æ–‡æœ¬æ•°ç»„,æ–‡æœ¬é«˜åº¦æ•°ç»„)
 ////================================================
 //void _logo3(HANDLE Stdout, int width, int height, int left, int top, int sleepTime, char **logoText, int *logoTextHeight)
 //{
@@ -485,57 +485,57 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //}
 //
 //
-////================Éú³É±ß¿ò(×ßÈ¦Ê½)================
-////¹¦ÄÜ£º ÔÚÆÁÄ»ÉÏÖğ×Ö»æÖÆ³öÒ»¸ö±ß¿ò 
-////ÓÃ·¨£º _creatFrame(´°¿Ú¾ä±ú,±ß¿ò³¤¶È,±ß¿ò¸ß¶È,»æÖÆ¼ä¸ô)
+////================ç”Ÿæˆè¾¹æ¡†(èµ°åœˆå¼)================
+////åŠŸèƒ½ï¼š åœ¨å±å¹•ä¸Šé€å­—ç»˜åˆ¶å‡ºä¸€ä¸ªè¾¹æ¡† 
+////ç”¨æ³•ï¼š _creatFrame(çª—å£å¥æŸ„,è¾¹æ¡†é•¿åº¦,è¾¹æ¡†é«˜åº¦,ç»˜åˆ¶é—´éš”)
 ////================================================  
 //void _creatFrame(HANDLE Stdout, int width, int height, int left, int top, int sleepTime)
 //{
 //	int i;
-//	//==========ÉÏ========== 
-//	_print(Stdout, left, top, "©³");
+//	//==========ä¸Š========== 
+//	_print(Stdout, left, top, "â”");
 //	for (i = 2; i <= width - 4; i += 2)
 //	{
-//		_print(Stdout, left + i, top, "©¥");
+//		_print(Stdout, left + i, top, "â”");
 //		Sleep(sleepTime);
 //	}
-//	_print(Stdout, left + width - 2, top, "©·");
+//	_print(Stdout, left + width - 2, top, "â”“");
 //
-//	//==========ÓÒ========== 
+//	//==========å³========== 
 //	for (i = 1; i <= height - 2; i++)
 //	{
-//		_print(Stdout, left + width - 2, top + i, "©§");
+//		_print(Stdout, left + width - 2, top + i, "â”ƒ");
 //		Sleep(sleepTime);
 //	}
 //
-//	//==========ÏÂ==========
-//	_print(Stdout, left + width - 2, top + height - 1, "©¿");
+//	//==========ä¸‹==========
+//	_print(Stdout, left + width - 2, top + height - 1, "â”›");
 //	for (i = width - 4; i >= 2; i -= 2)
 //	{
-//		_print(Stdout, left + i, top + height - 1, "©¥");
+//		_print(Stdout, left + i, top + height - 1, "â”");
 //		Sleep(sleepTime);
 //	}
-//	_print(Stdout, left, top + height - 1, "©»");
+//	_print(Stdout, left, top + height - 1, "â”—");
 //
-//	//==========ÓÒ========== 
+//	//==========å³========== 
 //	for (i = height - 2; i >= 1; i--)
 //	{
-//		_print(Stdout, left, top + i, "©§");
+//		_print(Stdout, left, top + i, "â”ƒ");
 //		Sleep(sleepTime);
 //	}
 //
 //}
 //
 //
-////================É¾³ı±ß¿ò(×ßÈ¦Ê½)================
-////¹¦ÄÜ£º Çå³ıÆÁÄ»ÉÏ»æÖÆ³öµÄ±ß¿ò(Ô­ÀíÍ¬»æÖÆÒ»Ñù) 
-////ÓÃ·¨£º _deleteFrame(±ß¿ò³¤¶È,±ß¿ò¸ß¶È,»æÖÆ¼ä¸ô)
-////×¢Òâ£º ±ß¿òµÄ¸ß¶ÈºÍ³¤¶ÈÒªÓë»æÖÆµÄÒ»ÖÂ 
+////================åˆ é™¤è¾¹æ¡†(èµ°åœˆå¼)================
+////åŠŸèƒ½ï¼š æ¸…é™¤å±å¹•ä¸Šç»˜åˆ¶å‡ºçš„è¾¹æ¡†(åŸç†åŒç»˜åˆ¶ä¸€æ ·) 
+////ç”¨æ³•ï¼š _deleteFrame(è¾¹æ¡†é•¿åº¦,è¾¹æ¡†é«˜åº¦,ç»˜åˆ¶é—´éš”)
+////æ³¨æ„ï¼š è¾¹æ¡†çš„é«˜åº¦å’Œé•¿åº¦è¦ä¸ç»˜åˆ¶çš„ä¸€è‡´ 
 ////================================================
 //void _deleteFrame(HANDLE Stdout, int width, int height, int left, int top, int sleepTime)
 //{
 //
-//	//==========×ó==========     
+//	//==========å·¦==========     
 //	int k;
 //	for (k = 1; k <= height; k++)
 //	{
@@ -543,21 +543,21 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //		Sleep(sleepTime);
 //	}
 //
-//	//==========ÏÂ==========     
+//	//==========ä¸‹==========     
 //	for (k = 2; k <= width; k += 2)
 //	{
 //		_print(Stdout, left + k, top + height - 1, "  ");
 //		Sleep(sleepTime);
 //	}
 //
-//	//==========ÓÒ==========     
+//	//==========å³==========     
 //	for (k = height - 2; k >= 0; k--)
 //	{
 //		_print(Stdout, left + width - 2, top + k, "  ");
 //		Sleep(sleepTime);
 //	}
 //
-//	//==========ÉÏ==========     
+//	//==========ä¸Š==========     
 //	for (k = width - 4; k >= 0; k -= 2)
 //	{
 //		_print(Stdout, left + k, top, "  ");
@@ -567,9 +567,9 @@ void anim_create_frame(int width, int height, char **text_layer) {
 //}
 //
 //
-////==========×ßÈ¦Ê½¶¯»­logo_Êä³ö¾ÓÖĞÎÄ×Ö===========
-////¹¦ÄÜ£º ÔÚ´°¿ÚµÄÈÎÒâÒ»ĞĞ¾ÓÖĞÊä³öÎÄ±¾ 
-////ÓÃ·¨£º _logo3_draw(´°¿Ú¾ä±ú,x×ø±ê,y×ø±ê,Êä³ö×Ö·û´®)
+////==========èµ°åœˆå¼åŠ¨ç”»logo_è¾“å‡ºå±…ä¸­æ–‡å­—===========
+////åŠŸèƒ½ï¼š åœ¨çª—å£çš„ä»»æ„ä¸€è¡Œå±…ä¸­è¾“å‡ºæ–‡æœ¬ 
+////ç”¨æ³•ï¼š _logo3_draw(çª—å£å¥æŸ„,xåæ ‡,yåæ ‡,è¾“å‡ºå­—ç¬¦ä¸²)
 ////================================================
 //void _logo3_draw(HANDLE Stdout, int width, int y, int left, int top, char* text)
 //{
@@ -585,9 +585,9 @@ void goto_pos(HANDLE Stdout, Pos pos) {
 	SetConsoleCursorPosition(Stdout, Pos);
 }
 
-//====================Êä³öÎÄ×Ö====================
-//¹¦ÄÜ£º ÔÚ´°¿ÚµÄÈÎÒâ¹â±êÊä³öÎÄ±¾ 
-//ÓÃ·¨£º _print(´°¿Ú¾ä±ú,x×ø±ê,y×ø±ê,Êä³ö×Ö·û´®)
+//====================è¾“å‡ºæ–‡å­—====================
+//åŠŸèƒ½ï¼š åœ¨çª—å£çš„ä»»æ„å…‰æ ‡è¾“å‡ºæ–‡æœ¬ 
+//ç”¨æ³•ï¼š _print(çª—å£å¥æŸ„,xåæ ‡,yåæ ‡,è¾“å‡ºå­—ç¬¦ä¸²)
 //================================================
 void pos_printf(HANDLE Stdout, Pos pos, const char *format, ...) {
 	va_list args;

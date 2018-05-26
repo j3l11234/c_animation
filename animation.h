@@ -28,31 +28,31 @@ typedef struct {
 } Pos;
 
 
-//ĞĞ½øÊ½¶¯»­
+//è¡Œè¿›å¼åŠ¨ç”»
 void anim_forword(HANDLE Stdout, Rect rect_pos, char **text_layer);
 
-//·½¿éË¢ĞÂÊ½¶¯»­
+//æ–¹å—åˆ·æ–°å¼åŠ¨ç”»
 void anim_square(HANDLE Stdout, Rect rect_pos, char **text_layer);
 
-//²Á³ı¶¯»­
+//æ“¦é™¤åŠ¨ç”»
 void anim_wipe(HANDLE Stdout, Rect rect_pos, char **text_layer, int sleepTime, int flag);
 void anim_wipe_cls(HANDLE Stdout, Rect rect_pos, int sleepTime, int flag, char *text);
 
-//¹«ÓÃº¯Êı
-void anim_create_frame(int width, int height, char **text_layer); //Éú³É[ÎÄ±¾Ó³ÉäÇø]µÄ±ß¿òÏñËØ
+//å…¬ç”¨å‡½æ•°
+void anim_create_frame(int width, int height, char **text_layer); //ç”Ÿæˆ[æ–‡æœ¬æ˜ å°„åŒº]çš„è¾¹æ¡†åƒç´ 
 void goto_pos(HANDLE Stdout, Pos pos);
 void pos_printf(HANDLE Stdout, Pos pos, const char *format, ...);
 
 
 //void _logo2(HANDLE Stdout, int width, int height, int left, int top, char **logoText, int *logoTextHeight);
-//void _logo2_draw(HANDLE Stdout, int** printPositionCount, char*** positionText, int left, int top); //»æÖÆËæ»úÍ¼°¸
+//void _logo2_draw(HANDLE Stdout, int** printPositionCount, char*** positionText, int left, int top); //ç»˜åˆ¶éšæœºå›¾æ¡ˆ
 //
-////×ßÈ¦Ê½¶¯»­
+////èµ°åœˆå¼åŠ¨ç”»
 //void _logo3(HANDLE Stdout, int width, int height, int left, int top, int sleepTime, char **logoText, int *logoTextHeight);
-//void _logo3_draw(HANDLE Stdout, int width, int y, int left, int top, char* text); //Êä³ö¾ÓÖĞÎÄ×Ö
+//void _logo3_draw(HANDLE Stdout, int width, int y, int left, int top, char* text); //è¾“å‡ºå±…ä¸­æ–‡å­—
 //
-//void _textCreat(int width, int height, char*** positionText, char* text); //Éú³É[ÎÄ±¾Ó³ÉäÇø]µÄÎÄ±¾ÏñËØ
-//void _creatFrame(HANDLE Stdout, int width, int height, int left, int top, int sleepTime); //Éú³É±ß¿ò(×ßÈ¦Ê½)
-//void _deleteFrame(HANDLE Stdout, int width, int height, int left, int top, int sleepTime); //É¾³ı±ß¿ò(×ßÈ¦Ê½)
+//void _textCreat(int width, int height, char*** positionText, char* text); //ç”Ÿæˆ[æ–‡æœ¬æ˜ å°„åŒº]çš„æ–‡æœ¬åƒç´ 
+//void _creatFrame(HANDLE Stdout, int width, int height, int left, int top, int sleepTime); //ç”Ÿæˆè¾¹æ¡†(èµ°åœˆå¼)
+//void _deleteFrame(HANDLE Stdout, int width, int height, int left, int top, int sleepTime); //åˆ é™¤è¾¹æ¡†(èµ°åœˆå¼)
 
 #endif 
