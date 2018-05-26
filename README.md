@@ -1,1 +1,2 @@
-##Cpp Animation
+## Cpp Animation
+这是当年大一时候，用c语言写字符动画的代码。15年整理过一次。
